@@ -17,7 +17,7 @@ export default function Topbar() {
         <div className="flex justify-between items-center cursor-pointer">
             <input
                 type="text"
-                className="top-search"
+                // className="top-search"
                 placeholder="Search movie, cast, genre"
             />
             <div className="flex items-center gap-4">
