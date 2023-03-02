@@ -1,18 +1,18 @@
 import { Head, Link } from "@inertiajs/react";
 import ReactPlayer from "react-player";
 
-export default function Show() {
+export default function Show({ movie }) {
     return (
         <>
             <Head>
-                <title>Detail Movie</title>
+                <title>{movie.name}</title>
             </Head>
             <section
                 class="mx-auto w-screen h-screen relative watching-page font-poppins bg-form-bg"
                 id="stream">
                 <div className="pt-[100px]">
                     <ReactPlayer
-                        url="https://www.youtube.com/watch?v=irlSPF-quZo"
+                        url={movie.video_url}
                         controls
                         width={"100%"}
                         height={"80vh"}
@@ -21,7 +21,7 @@ export default function Show() {
 
                 {/* Button back to dashboard */}
                 <div class="absolute top-5 left-5 z-20">
-                    <Link href={route("prototype.dashboard")}>
+                    <Link href={route("user.dashboard.index")}>
                         <img
                             src="/icons/ic_arrow-left.svg"
                             class="transition-all btn-back w-[46px]"
@@ -33,7 +33,7 @@ export default function Show() {
                 {/* Video Title */}
                 <div class="absolute title-video top-7 left-1/2 -translate-x-1/2 max-w-[310px] md:max-w-[620px] text-center">
                     <span class="font-medium text-2xl transition-all text-white drop-shadow-md select-none">
-                        Details Screen Part Final
+                        {movie.name}
                     </span>
                 </div>
             </section>
