@@ -7,6 +7,7 @@ use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -55,6 +56,10 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'activePlan' => $this->activePlan(),
+            ],
+            'flashMessage' => [
+                'message' => FacadesSession::get('message'),
+                'type' => FacadesSession::get('type'),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

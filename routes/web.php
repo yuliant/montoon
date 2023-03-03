@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\MovieController;
 use App\Http\Controllers\User\SubscriptionPlanController;
+use App\Http\Controllers\Admin\MovieController as AdminMovieController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,14 +20,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('admin', function () {
-    return "Hi, admin";
-})->middleware('role:admin');
-
-Route::get('user', function () {
-    return "Hi, user";
-})->middleware('role:user');
-
 Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashboard.')->group(
@@ -38,26 +31,10 @@ Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashbo
         Route::post('subscription-plan/{subscriptionPlan}/user-subscribe', [SubscriptionPlanController::class, 'userSubscribe'])->name('subscriptionPlan.userSubscribe')->middleware('checkUserSubscription:false');
     }
 );
-Route::prefix('prototype')->name('prototype.')->group(function () {
-    Route::get('/login', function () {
-        return Inertia::render('Prototype/Login');
-    })->name('login');
 
-    Route::get('/register', function () {
-        return Inertia::render('Prototype/Register');
-    })->name('register');
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Prototype/Dashboard');
-    })->name('dashboard');
-
-    Route::get('/subscriptionPlan', function () {
-        return Inertia::render('Prototype/SubscriptionPlan');
-    })->name('subscriptionPlan');
-
-    Route::get('/movie/{slug}', function () {
-        return Inertia::render('Prototype/Movie/Show');
-    })->name('movie.show');
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.dashboard.')->group(function () {
+    Route::put('movie/{movie}/restore', [AdminMovieController::class, 'restore'])->name('movie.restore');
+    Route::resource('movie', AdminMovieController::class);
 });
 
 Route::middleware('auth')->group(function () {
@@ -66,4 +43,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+// Route::prefix('prototype')->name('prototype.')->group(function () {
+//     Route::get('/login', function () {
+//         return Inertia::render('Prototype/Login');
+//     })->name('login');
+
+//     Route::get('/register', function () {
+//         return Inertia::render('Prototype/Register');
+//     })->name('register');
+
+//     Route::get('/dashboard', function () {
+//         return Inertia::render('Prototype/Dashboard');
+//     })->name('dashboard');
+
+//     Route::get('/subscriptionPlan', function () {
+//         return Inertia::render('Prototype/SubscriptionPlan');
+//     })->name('subscriptionPlan');
+
+//     Route::get('/movie/{slug}', function () {
+//         return Inertia::render('Prototype/Movie/Show');
+//     })->name('movie.show');
+// });
 require __DIR__ . '/auth.php';
