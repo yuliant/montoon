@@ -37,6 +37,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.dashboar
     Route::resource('movie', AdminMovieController::class);
 });
 
+// MIDTRANS ROUTE
+Route::post('midtrans/notification', [SubscriptionPlanController::class, 'midtransCallback']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
